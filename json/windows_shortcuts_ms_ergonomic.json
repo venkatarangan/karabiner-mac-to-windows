@@ -655,6 +655,33 @@
          ]
       },
       {
+         "description": "K (Ctrl)",
+         "manipulators": [
+            {
+               "type": "basic",
+               "from": {
+                  "key_code": "k",
+                  "modifiers": {
+                     "mandatory": [
+                        "control"
+                     ],
+                     "optional": [
+                        "any"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "k",
+                     "modifiers": [
+                        "command"
+                     ]
+                  }
+               ]
+            }
+         ]
+      },
+      {
          "description": "N (Ctrl)",
          "manipulators": [
             {
@@ -1941,5 +1968,5 @@
          ]
       }
    ],
-   "title": "Windows Mode for macOS - Microsoft Ergonomic Keyboard (Venkat)"
+   "title": "Windows Mode for macOS v22 - Microsoft Ergonomic Keyboard"
 }

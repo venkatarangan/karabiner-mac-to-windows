@@ -173,6 +173,7 @@ macOS will warn about a conflict between Spotlight and Input Sources — click O
 | `Ctrl+A` | Select all |
 | `Ctrl+S` | Save |
 | `Ctrl+F` | Find |
+| `Ctrl+K` | Insert link |
 | `Ctrl+B` | Bold |
 | `Ctrl+I` | Italic |
 | `Ctrl+U` | Underline |
