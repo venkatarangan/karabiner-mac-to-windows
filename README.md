@@ -115,7 +115,7 @@ cp windows_shortcuts_ms_ergonomic.json \
 Or click this link to import directly (replace `venkatarangan` after publishing):
 
 ```
-karabiner://karabiner/assets/complex_modifications/import?url=https://raw.githubusercontent.com/venkatarangan/karabiner-mac-to-windows/main/json/windows_shortcuts_ms_ergonomic.json
+karabiner://karabiner/assets/complex_modifications/import?url=https://raw.githubusercontent.com/Gamer08YT/karabiner-mac-to-windows/main/json/windows_shortcuts_ms_ergonomic.json
 ```
 
 ---

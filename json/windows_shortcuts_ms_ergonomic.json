@@ -1961,7 +1961,25 @@
                "type": "basic"
             }
          ]
+      },
+      {
+         "description": "Print [macOS Screenshot Tool]",
+         "manipulators": [
+            {
+               "type": "basic",
+               "from": {
+                  "key_code": "print_screen"
+               },
+               "to": [
+                  {
+                     "key_code": "5",
+                     "modifiers": ["command", "shift"]
+                  }
+               ]
+            }
+         ]
       }
+
    ],
    "title": "Windows Mode for macOS v26 - Microsoft Ergonomic Keyboard"
 }
