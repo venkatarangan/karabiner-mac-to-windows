@@ -23,7 +23,8 @@ If you're a Windows user spending time on a Mac and you want your keyboard to ju
 | | |
 |---|---|
 | **Keyboard** | Microsoft Ergonomic Keyboard |
-| **macOS** | macOS Tahoe 26.4.1 |
+| **macOS** | macOS Tahoe 26.4.1 and macOS Golden Gate 27.0 |
+| **Karabiner-Elements** | 16.3.0 |
 | **Apps tested** | VS Code, Google Chrome, Vivaldi, Microsoft Word, Finder, WhatsApp, Evernote, Terminal |
 
 Should work on any standard Windows layout keyboard where the Win key registers as `left_command` in macOS. See the troubleshooting section if your Win key is behaving unexpectedly.
@@ -261,6 +262,9 @@ macOS will warn about a conflict between Spotlight and Input Sources — click O
 
 **Nothing works at all**
 → Karabiner-Elements → Devices → your keyboard → "Modify events" must be ON. This is the most common cause by far.
+
+**Everything stopped working after a macOS upgrade**
+→ A major macOS upgrade (26 → 27, for example) revokes the Karabiner driver approval. Open Karabiner-Elements → **System Extensions** and re-enable it, approve it in System Settings → Privacy & Security → Security, restart, then re-check **Input Monitoring** and **Accessibility** in Step 2 and the **Modify events** toggles in Step 7. The ruleset itself survives the upgrade untouched.
 
 **Deleting the Karabiner profile breaks everything after re-import**
 → Deleting the profile resets all "Modify events" toggles to OFF. After re-importing, go to Devices and turn the toggle back on for both your keyboard and your mouse.
