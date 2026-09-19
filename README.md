@@ -43,10 +43,11 @@ Most Karabiner Windows-mode profiles exclude Terminal, IDEs, and browsers from s
 | `Win+Shift+S` → Screenshot snip | Not included | ✓ |
 | `Win+Shift+F` → Screenshot toolbar | Not included | ✓ |
 | `F2` → Rename in Finder | Not included | ✓ |
+| `Del` → Move to Bin in Finder | Not included — breaks rename | ✓ Rename-state tracking |
 | `Win+Delete` → Move to Bin in Finder | Not included | ✓ |
 | `Ctrl+M` → Move files in Finder | Not included | ✓ |
 | `Win+D` → Show Desktop | Rarely included | ✓ |
-| Full setup guide | Minimal | ✓ Step-by-step docx included |
+| Full setup guide | Minimal | ✓ Step-by-step, with a smoke test checklist |
 
 > **Note on Terminal and `Ctrl+C`:** Because there are no app exclusions, `Ctrl+C` in Terminal copies text rather than sending SIGINT. To interrupt a running process use `Ctrl+F4` to close the tab, or kill the process from another tab or Activity Monitor. If you'd prefer a variant that restores SIGINT in Terminal, open an issue.
 
@@ -112,7 +113,7 @@ cp windows_shortcuts_ms_ergonomic.json \
   ~/.config/karabiner/assets/complex_modifications/
 ```
 
-Or click this link to import directly (replace `venkatarangan` after publishing):
+Or paste this link into Safari to import it directly:
 
 ```
 karabiner://karabiner/assets/complex_modifications/import?url=https://raw.githubusercontent.com/venkatarangan/karabiner-mac-to-windows/main/json/windows_shortcuts_ms_ergonomic.json
@@ -124,10 +125,12 @@ karabiner://karabiner/assets/complex_modifications/import?url=https://raw.github
 
 1. Open Karabiner-Elements → **Complex Modifications**
 2. Click **Add predefined rule**
-3. Find **"Windows Mode for macOS - Microsoft Ergonomic Keyboard"**
+3. Find **"Windows Mode for macOS v27 - Microsoft Ergonomic Keyboard"**
 4. Click **Enable All**
 
 If you have any other Windows-mode rulesets enabled (e.g. from rux616), disable them first to avoid conflicts.
+
+> **Upgrading from an older version of this ruleset?** Each release carries its own version in the title, so Karabiner treats it as a separate rule set rather than replacing the old one. In **Complex Modifications**, remove every rule belonging to the previous version *before* enabling the new one — otherwise both are active and they fight over keys like `F2` and `Enter`.
 
 ---
 
@@ -235,9 +238,11 @@ macOS will warn about a conflict between Spotlight and Input Sources — click O
 | Key | Action |
 |---|---|
 | `F2` | Rename file (passes through unchanged in Excel and Numbers) |
+| `Del` | Move selected file to Bin — exactly like Windows |
+| `Shift+Del` | Delete immediately, skipping the Bin (Finder asks to confirm) |
+| `Del` *(while renaming)* | Delete character forward in the filename |
 | `Backspace` | Delete character back during rename |
-| `Del` | Delete character forward during rename |
-| `Win+Backspace` or `Win+Del` | Move file to Bin |
+| `Win+Backspace` or `Win+Del` | Move file to Bin (works even mid-rename) |
 | `Ctrl+C` | Copy file |
 | `Ctrl+V` | Paste copy of file |
 | `Ctrl+C` → navigate → `Ctrl+M` | Move file to destination |
@@ -273,18 +278,58 @@ macOS will warn about a conflict between Spotlight and Input Sources — click O
 → Terminal: Settings → Profiles → Keyboard → check "Use Option as Meta key".
 → iTerm2: Settings → Profiles → Keys → Left Option key → Esc+.
 
+**Del stopped moving files to the Bin in Finder**
+→ The ruleset tracks whether Finder is renaming a file, and it thinks you are still in a rename field. Press `Escape` once with Finder focused and `Del` goes back to normal. This can happen if a rename was started by clicking the filename twice slowly and then ended in an unusual way. `Win+Del` always works regardless of state.
+
+**Del wiped the filename I was typing in Finder**
+→ Same tracker, the other way round. Press `Cmd+Z` or `Escape` to get the name back (the file itself is never touched). Starting renames with `F2` or `Enter` rather than a slow double-click keeps the tracker accurate.
+
 **Ctrl+Click multi-select not working**
 → Karabiner-Elements → Devices → find your mouse (listed separately from the keyboard) → "Modify events" must be ON for the mouse too.
 
 ---
 
-## Full setup guide
+## Smoke test after setup
 
-A complete step-by-step setup guide is included in `docs/mac_windows_keyboard_setup.docx`. It covers Homebrew, Karabiner installation, all permissions, keyboard setup assistant, EventViewer verification, all macOS shortcut assignments, and a smoke test checklist to tick off after each fresh setup.
+Run through this after a fresh setup, after a macOS upgrade, or any time you plug in a new keyboard or mouse. It takes a minute and catches the usual suspects.
+
+**Basics**
+- [ ] `Ctrl+C` / `Ctrl+V` copy and paste in any app
+- [ ] `Ctrl+Left` / `Ctrl+Right` jump a word
+- [ ] `Home` / `End` go to line start and end
+- [ ] `Ctrl+Click` selects multiple files in Finder *(needs Modify events ON for the mouse)*
+
+**Finder delete**
+- [ ] Select a file, press `Del` → it moves to the Bin, `Cmd+Z` brings it back
+- [ ] Press `F2`, type a few characters, press `Del` mid-name → one character forward is deleted, the file is untouched. `Escape` to cancel
+- [ ] Press `Enter` on a file, then `Escape`, then `Del` → moves to Bin
+- [ ] In TextEdit or VS Code, `Del` → still a plain forward delete
+
+**Needs Step 8**
+- [ ] `Ctrl+Space` opens Spotlight
+- [ ] `Win+Space` switches input language
+- [ ] `Win+D` shows the Desktop
+
+If any of these fail, the Troubleshooting section below covers the cause for each one.
 
 ---
 
 ## Changelog
+
+### v27 — Del key works like Windows in Finder
+
+**1. `Del` moves the selected file to the Bin in Finder**
+Plain `Del` now sends `Cmd+Backspace` in Finder, matching Windows Explorer exactly. `Shift+Del` sends `Cmd+Option+Backspace` to delete immediately, again matching Windows — Finder still shows its confirmation dialog. Both are Finder-only; everywhere else `Del` remains a forward delete.
+
+**2. Rename mode is now tracked, so v26's problem does not come back**
+v25 and v26 removed the `Del → Bin` rule because Finder's rename text field shares the Finder bundle identifier, so the rule fired while typing a filename. The new rule keeps a `finder_rename_mode` variable instead: `F2` and `Enter` set it, `Enter` again, `Escape` and a plain mouse click clear it. `Del → Bin` only fires while the variable is clear; inside a rename `Del` stays a plain forward delete.
+
+**3. `Win+Del` and `Win+Backspace` kept**
+They still move files to the Bin and ignore the rename state entirely, so they remain the guaranteed-safe option.
+
+> The rename tracker is a state machine, not a reading of Finder's actual state — Karabiner cannot see that. Renames started from the keyboard (`F2`, `Enter`) are tracked exactly. A rename started by clicking a filename twice slowly can leave it out of step; `Escape` resyncs it, and the worst case is either `Del` not deleting, or losing the filename text you were typing — never a file deleted unintentionally.
+
+---
 
 ### v26 — Finder delete key fix
 
@@ -351,6 +396,6 @@ Copyright (c) 2026 Venkatarangan Thirumalai ([venkatarangan.com](https://venkata
 
 ## Acknowledgements
 
-Built on top of the foundation laid by [rux616/karabiner-windows-mode](https://github.com/rux616/karabiner-windows-mode). Extended with universal app coverage, Finder-specific shortcuts, screenshots, and a full setup guide.
+Built on top of the foundation laid by [rux616/karabiner-windows-mode](https://github.com/rux616/karabiner-windows-mode). Extended with universal app coverage, Finder-specific shortcuts, screenshots, and a full setup guide in this README.
 
 The ruleset JSON and all documentation in this repo were generated by [Claude Sonnet 4.6](https://www.anthropic.com/claude) based on my instructions and requirements. I did not hand-code any of it — my contribution was describing what I needed, testing the output on my actual setup, and iteratively fine-tuning until it worked correctly. If you find this useful, the credit for translating messy human requirements into working Karabiner JSON goes to Claude.

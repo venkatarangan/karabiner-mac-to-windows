@@ -1,6 +1,338 @@
 {
    "rules": [
       {
+         "description": "Delete [Move to Bin in Finder - Windows style, rename-safe]",
+         "manipulators": [
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  }
+               ],
+               "from": {
+                  "key_code": "f2",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "return_or_enter"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 1
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 0
+                  }
+               ],
+               "from": {
+                  "key_code": "return_or_enter",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "return_or_enter"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 1
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 1
+                  }
+               ],
+               "from": {
+                  "key_code": "return_or_enter",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "return_or_enter"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 0
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 0
+                  }
+               ],
+               "from": {
+                  "key_code": "keypad_enter",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "keypad_enter"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 1
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 1
+                  }
+               ],
+               "from": {
+                  "key_code": "keypad_enter",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "keypad_enter"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 0
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  }
+               ],
+               "from": {
+                  "key_code": "escape",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "escape"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 0
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  }
+               ],
+               "from": {
+                  "pointing_button": "button1",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "pointing_button": "button1"
+                  },
+                  {
+                     "set_variable": {
+                        "name": "finder_rename_mode",
+                        "value": 0
+                     }
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 0
+                  }
+               ],
+               "from": {
+                  "key_code": "delete_forward",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "delete_or_backspace",
+                     "modifiers": [
+                        "command"
+                     ]
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 0
+                  }
+               ],
+               "from": {
+                  "key_code": "delete_forward",
+                  "modifiers": {
+                     "mandatory": [
+                        "shift"
+                     ],
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "delete_or_backspace",
+                     "modifiers": [
+                        "command",
+                        "option"
+                     ]
+                  }
+               ]
+            },
+            {
+               "type": "basic",
+               "conditions": [
+                  {
+                     "type": "frontmost_application_if",
+                     "bundle_identifiers": [
+                        "^com\\.apple\\.finder$"
+                     ]
+                  },
+                  {
+                     "type": "variable_if",
+                     "name": "finder_rename_mode",
+                     "value": 1
+                  }
+               ],
+               "from": {
+                  "key_code": "delete_forward",
+                  "modifiers": {
+                     "optional": [
+                        "caps_lock"
+                     ]
+                  }
+               },
+               "to": [
+                  {
+                     "key_code": "delete_forward"
+                  }
+               ]
+            }
+         ]
+      },
+      {
          "description": "Insert (Ctrl)",
          "manipulators": [
             {
@@ -1851,7 +2183,7 @@
          ]
       },
       {
-         "description": "M (Ctrl) [Move File in Finder \u2014 Cmd+Option+V]",
+         "description": "M (Ctrl) [Move File in Finder — Cmd+Option+V]",
          "manipulators": [
             {
                "type": "basic",
@@ -1963,5 +2295,5 @@
          ]
       }
    ],
-   "title": "Windows Mode for macOS v26 - Microsoft Ergonomic Keyboard"
+   "title": "Windows Mode for macOS v27 - Microsoft Ergonomic Keyboard"
 }
